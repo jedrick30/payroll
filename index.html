@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payroll Input</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Payroll Input Form</h1>
+    <form id="payrollForm">
+      <label for="employeeId">ID:</label>
+      <input type="text" id="employeeId" required />
+
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" required />
+
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" required />
+
+      <label for="middleName">Middle Name:</label>
+      <input type="text" id="middleName" required />
+
+      <label for="position">Position:</label>
+      <input type="text" id="position" required />
+
+      <label for="rate">Daily Rate (₱):</label>
+      <input type="number" id="rate" required />
+
+      <label for="days">Days Worked:</label>
+      <input type="number" id="days" required />
+
+      <button type="submit">Compute Payroll</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("payrollForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const payrollData = {
+        employeeId: document.getElementById("employeeId").value,
+        firstName: document.getElementById("firstName").value,
+        lastName: document.getElementById("lastName").value,
+        middleName: document.getElementById("middleName").value,
+        position: document.getElementById("position").value,
+        rate: parseFloat(document.getElementById("rate").value),
+        days: parseInt(document.getElementById("days").value),
+      };
+
+      payrollData.grossPay = payrollData.rate * payrollData.days;
+      payrollData.sss = payrollData.grossPay * 0.05;
+      payrollData.pagibig = payrollData.grossPay * 0.03;
+      payrollData.philhealth = payrollData.grossPay * 0.02;
+      payrollData.tax = payrollData.grossPay * 0.05;
+      payrollData.totalDeduction = payrollData.sss + payrollData.pagibig + payrollData.philhealth + payrollData.tax;
+      payrollData.netPay = payrollData.grossPay - payrollData.totalDeduction;
+
+      localStorage.setItem("payrollData", JSON.stringify(payrollData));
+      window.location.href = "display.html";
+    });
+  </script>
+</body>
+</html>
